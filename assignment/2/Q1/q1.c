@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define NUM_WORK_REQ 100
 
@@ -10,7 +11,7 @@ int main (int argc, char *argv[]) {
     int my_rank;
     int *paper_marks, *scount, *displs, offset, *recvbuf;
     int minPapersPerMarker;
-    int sub_total, sub_average;
+    int sub_total;
     int total, average, *sub_totals;
 
     MPI_Init(&argc, &argv);
@@ -24,6 +25,7 @@ int main (int argc, char *argv[]) {
 
     if (my_rank == 0) {
         //init data
+        srand(time(NULL));
         paper_marks = (int *) malloc(sizeof(int) * N);
     
         //randomly fill up marks
@@ -63,15 +65,9 @@ int main (int argc, char *argv[]) {
         sub_total += recvbuf[i];
     }
 
-    MPI_Request request;
-    MPI_Igather(&sub_total, 1, MPI_INT, 
+    MPI_Gather(&sub_total, 1, MPI_INT, 
                 sub_totals, 1, MPI_INT,
-                0, MPI_COMM_WORLD, &request);
-
-    sub_average = sub_total / scount[my_rank];
-    printf("I am process %d with %d number of exam papers. The sub average of this process is %d.\n", my_rank, scount[my_rank], sub_average);
-
-    MPI_Wait(&request, MPI_STATUS_IGNORE);
+                0, MPI_COMM_WORLD);
 
     if (my_rank == 0) {
         total = 0;
@@ -82,12 +78,12 @@ int main (int argc, char *argv[]) {
         average = total / N;
     }
 
-
     MPI_Bcast(&average, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     printf("I am process %d with %d number of exam papers. The average is %d for total of %d papers.\n", my_rank, scount[my_rank], average, N);
 
     MPI_Finalize();
  
+
     return EXIT_SUCCESS;
 }
