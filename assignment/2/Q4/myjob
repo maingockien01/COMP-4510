@@ -5,4 +5,4 @@
 # Set the number of processes here:
 #$ -pe mpi 4
 # Change the name of the execuatable here:
-mpirun ./q2 > output.txt
+mpirun ./q4 > output.txt

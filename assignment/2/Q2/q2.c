@@ -45,7 +45,7 @@ int main (int argc, char *argv[]) {
 
     MPI_Request bcast_request;
 
-    MPI_Ibcast(b, matrix_size, MPI_INI, 0, MPI_COMM_WORLD, &bcast_request);
+    MPI_Ibcast(b, matrix_size, MPI_INT, 0, MPI_COMM_WORLD, &bcast_request);
 
     //Partition matrix A - rows (conceptually)
     for (int i = 0; i < comm_size; i ++) {

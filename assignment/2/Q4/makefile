@@ -5,11 +5,11 @@
 ###############################################
 
 # name of the executable to be generated
-PROG = q2
+PROG = q4
 # space-delimited list of header files
 HDRS =
 # space-delimited list of source files
-SRCS = q2.c 
+SRCS = q4.c 
 
 #######################
 # Don't change these: #
