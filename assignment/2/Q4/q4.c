@@ -16,8 +16,8 @@ int main (int argc, char *argv[]) {
 
     MPI_Request send_request;
     MPI_Request recv_request;
-    MPI_Isend(&my_rank, 1, MPI_INT, next_process, MPI_ANY_TAG, MPI_COMM_WORLD, &send_request);
-    MPI_Irecv(&recv_rank, 1, MPI_INT, prev_process, MPI_ANY_TAG, MPI_COMM_WORLD, &recv_request);
+    MPI_Isend(&my_rank, 1, MPI_INT, next_process, 0, MPI_COMM_WORLD, &send_request);
+    MPI_Irecv(&recv_rank, 1, MPI_INT, prev_process, 0, MPI_COMM_WORLD, &recv_request);
 
     MPI_Wait(&recv_request, MPI_STATUS_IGNORE);
 
